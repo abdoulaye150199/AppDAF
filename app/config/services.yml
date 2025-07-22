@@ -1,0 +1,38 @@
+services:
+  # Core Services
+  router:
+    class: App\Core\Router
+    shared: true
+
+  database:
+    class: App\Core\Database
+    factory: getInstance
+    shared: true
+
+  # Repositories
+  citoyenRepository:
+    class: App\Repository\CitoyenRepository
+    arguments: ['@database']
+    shared: true
+
+  journalRepository:
+    class: App\Repository\JournalRechercheRepository
+    arguments: ['@database']
+    shared: true
+
+  # Controllers
+  citoyenController:
+    class: App\Controller\CitoyenController
+    arguments:
+      - '@citoyenRepository'
+      - '@journalRepository'
+
+  # Response Handlers
+  jsonResponse:
+    class: App\Core\JsonResponse
+    shared: true
+
+  # Middlewares
+  apiMiddleware:
+    class: App\Core\Middleware
+    shared: true

@@ -1,0 +1,11 @@
+# Accéder au conteneur PHP
+docker compose exec php bash
+
+# Accéder à PostgreSQL
+docker compose exec postgres psql -U user -d appdaf
+
+# Arrêter les conteneurs
+docker compose down
+
+# Arrêter et supprimer les volumes
+docker compose down -v

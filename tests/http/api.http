@@ -1,0 +1,9 @@
+@baseUrl = http://localhost:8080/api
+
+### Test 1: Récupérer un citoyen existant
+GET {{baseUrl}}/citoyens/1234567890123
+Content-Type: application/json
+
+### Test 2: Récupérer un citoyen inexistant
+GET {{baseUrl}}/citoyens/9876543210987
+Content-Type: application/json

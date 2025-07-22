@@ -1,0 +1,41 @@
+{
+    "name": "abdoulaye/app-daf",
+    "description": "appdaf",
+    "version": "1.0.0",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "App\\Controller\\": "src/Controller/",
+            "App\\Repository\\": "src/Repository/",
+            "App\\Models\\": "src/entity/"
+        },
+        "files": [
+            "app/config/helpers.php"
+        ]
+    },
+    "authors": [
+        {
+            "name": "diallolaye01",
+            "email": "layediallo0115@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^8.1",
+        "ext-pdo": "*",
+        "vlucas/phpdotenv": "^5.5",
+        "symfony/yaml": "^6.0",
+        "aws/aws-sdk-php": "^3.351"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.0"
+    },
+    "scripts": {
+        "database:migrate": "php public/scripts/migrate.php",
+        "database:seed": "php seeders/seeder.php",
+        "setup:db": [
+            "@database:migrate",
+            "@database:seed"
+        ]
+    }
+}
