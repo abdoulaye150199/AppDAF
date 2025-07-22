@@ -1,0 +1,41 @@
+services:
+  - type: web
+    name: appdaf
+    env: docker
+    region: frankfurt
+    plan: starter
+    healthCheckPath: /api/health
+    envVars:
+      - key: DB_HOST
+        fromDatabase:
+          name: appdaf-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: appdaf-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: appdaf-db
+          property: database
+      - key: DB_USER
+        fromDatabase:
+          name: appdaf-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: appdaf-db
+          property: password
+      - key: AWS_ACCESS_KEY_ID
+        sync: false
+      - key: AWS_SECRET_ACCESS_KEY
+        sync: false
+      - key: AWS_DEFAULT_REGION
+        value: eu-west-1
+      - key: AWS_BUCKET
+        value: your-bucket-name
+
+databases:
+  - name: appdaf-db
+    region: frankfurt
+    plan: starter
