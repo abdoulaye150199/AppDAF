@@ -34,6 +34,19 @@ services:
         value: eu-west-1
       - key: AWS_BUCKET
         value: your-bucket-name
+  - type: web
+    name: appdaf-pgadmin
+    env: docker
+    region: frankfurt
+    plan: starter
+    healthCheckPath: /
+    envVars:
+      - key: PGADMIN_DEFAULT_EMAIL
+        value: "laye@admin.com"
+      - key: PGADMIN_DEFAULT_PASSWORD
+        value: "laye123"
+      - key: PGADMIN_CONFIG_SERVER_MODE
+        value: "False"
 
 databases:
   - name: appdaf-db

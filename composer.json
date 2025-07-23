@@ -25,7 +25,8 @@
         "ext-pdo": "*",
         "vlucas/phpdotenv": "^5.5",
         "symfony/yaml": "^6.0",
-        "aws/aws-sdk-php": "^3.351"
+        "aws/aws-sdk-php": "^3.351",
+        "cloudinary/cloudinary_php": "^3.1"
     },
     "require-dev": {
         "phpunit/phpunit": "^10.0"

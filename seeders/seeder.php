@@ -1,13 +1,25 @@
 <?php
 
 use App\Core\Database;
+use Cloudinary\Cloudinary;
 
 class DatabaseSeeder
 {
     private $database;
+    private Cloudinary $cloudinary;
 
     public function __construct()
     {
+
+    $this->cloudinary = new Cloudinary([
+      'cloud' => [
+        'cloud_name' => CLOUD_NAME,
+        'api_key'    => PUBLIC_KEY,
+        'api_secret' => PRIVATE_KEY
+      ]
+    ]);
+
+
         try {
             $this->database = Database::getInstance();
             echo "Connexion à la base de données établie\n";
@@ -27,6 +39,8 @@ class DatabaseSeeder
 
     private function seedCitoyens(): void
     {
+        $uploadPath = __DIR__ . '/../public/images/upload/';
+
         $citoyens = [
             [
                 'nci' => '1234567890123',
@@ -34,29 +48,37 @@ class DatabaseSeeder
                 'prenom' => 'Abdoulaye', 
                 'date_naissance' => '1990-01-15',
                 'lieu_naissance' => 'Dakar',
-                'url_copie_cni' => 'https://storage.cloud.example.com/cni/1234567890123.jpg'
-            ],
-            [
-                'nci' => '9876543210987',
-                'nom' => 'SOW',
-                'prenom' => 'Fatou',
-                'date_naissance' => '1995-06-20',
-                'lieu_naissance' => 'Saint-Louis',
-                'url_copie_cni' => 'https://storage.cloud.example.com/cni/9876543210987.jpg'
+                'url_copie_cni' => 'cni1.png'
             ]
         ];
 
         $sql = "INSERT INTO citoyens (nci, nom, prenom, date_naissance, lieu_naissance, url_copie_cni) 
                 VALUES (:nci, :nom, :prenom, :date_naissance, :lieu_naissance, :url_copie_cni)";
-        
+
         try {
             $stmt = $this->database->getPdo()->prepare($sql);
             foreach ($citoyens as $citoyen) {
+                $filename = $citoyen['url_copie_cni']; // Change here: use associative key
+                $localPath = $uploadPath . $filename;
+                
+                if ($filename && file_exists($localPath)) {
+                    $upload = $this->cloudinary->uploadApi()->upload($localPath, [
+                        'folder' => 'appdaf/cni'
+                    ]);
+                    $citoyen['url_copie_cni'] = $upload['secure_url']; //     Change here: use associative key
+                } else {
+                    if ($filename) {
+                        echo "❌ Image introuvable : $filename\n";
+                    }
+                    $citoyen['url_copie_cni'] = null; // Change here: use associative key
+                }
+
                 $stmt->execute($citoyen);
+                echo "✅ Citoyen inséré : {$citoyen['nom']} {$citoyen['prenom']}\n";
             }
-            echo "Données insérées dans la table citoyens avec succès\n";
+            echo "✅ Données insérées dans la table citoyens avec succès\n";
         } catch (\PDOException $e) {
-            echo "Erreur lors de l'insertion des données citoyens: " . $e->getMessage() . "\n";
+            echo "❌ Erreur lors de l'insertion des données citoyens: " . $e->getMessage() . "\n";
         }
     }
 
