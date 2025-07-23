@@ -39,16 +39,15 @@ services:
     env: docker
     region: frankfurt
     plan: starter
-    buildCommand: docker build -t appdaf-pgadmin ./docker/pgadmin
-    startCommand: docker run -p 8080:80 appdaf-pgadmin
+    dockerfilePath: ./Dockerfile
     envVars:
       - key: PGADMIN_DEFAULT_EMAIL
         value: laye@admin.com
       - key: PGADMIN_DEFAULT_PASSWORD
-        sync: false  # For security, set this in Render dashboard
+        sync: false
       - key: PGADMIN_CONFIG_SERVER_MODE
         value: "False"
-    healthCheckPath: /
+    healthCheckPath: /login
 
 databases:
   - name: appdaf-db
